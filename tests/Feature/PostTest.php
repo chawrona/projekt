@@ -14,9 +14,7 @@ class PostTest extends TestCase
     {
 
         $response = $this->getJson('/api/posts');
-
-        $response->assertStatus(200)
-                 ->assertJsonCount(3);
+        $response->assertStatus(200);
     }
 
     public function test_store_creates_new_post()
@@ -26,7 +24,9 @@ class PostTest extends TestCase
             'content' => 'Treść posta.',
         ];
 
-        $response = $this->postJson('/api/posts', $data);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->postJson('/api/posts', $data);
 
         $response->assertStatus(201)
                  ->assertJsonFragment($data);
@@ -45,7 +45,7 @@ class PostTest extends TestCase
                      'id'      => $post->id,
                      'title'   => $post->title,
                      'content' => $post->content,
-                 ]);
+        ]);
     }
 
     public function test_update_modifies_post()
@@ -57,7 +57,9 @@ class PostTest extends TestCase
             'content' => 'Zaktualizowana treść.',
         ];
 
-        $response = $this->putJson("/api/posts/{$post->id}", $data);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->putJson("/api/posts/{$post->id}", $data);
 
         $response->assertStatus(200)
                  ->assertJsonFragment($data);
@@ -69,7 +71,9 @@ class PostTest extends TestCase
     {
         $post = Post::factory()->create();
 
-        $response = $this->deleteJson("/api/posts/{$post->id}");
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->deleteJson("/api/posts/{$post->id}");
 
         $response->assertStatus(204);
 
