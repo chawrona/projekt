@@ -4,16 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
-    public function index()
+    /**
+     * @return Collection<int, Post>
+     */
+    public function index(): Collection
     {
         return Post::all();
     }
 
-    public function store(PostRequest $request)
+    public function store(PostRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
@@ -22,12 +28,12 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
-    public function show(Post $post)
+    public function show(Post $post): JsonResponse
     {
         return response()->json($post, 200);
     }
 
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, Post $post): JsonResponse
     {
         $validated = $request->validated();
 
@@ -36,7 +42,7 @@ class PostController extends Controller
         return response()->json($post, 200);
     }
 
-    public function destroy(Post $post)
+    public function destroy(Post $post): Response
     {
         $post->delete();
         return response(status: 204);
