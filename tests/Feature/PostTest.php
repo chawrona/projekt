@@ -1,5 +1,5 @@
 <?php
-/*
+
 namespace Tests\Feature;
 
 use App\Models\Post;
@@ -77,4 +77,4 @@ class PostTest extends TestCase
     }
 }
 
-*/
+
